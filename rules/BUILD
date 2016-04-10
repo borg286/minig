@@ -3,8 +3,14 @@ load("/rules/extension", "py_requirements")
 load("/rules/extension", "node_dockerfile")
 load("/rules/extension", "node_package")
 load("/rules/extension", "docker_build")
+load("/rules/extension", "gen_grpc")
 
 
+gen_grpc(
+    name="mygrpc",
+    proto="helloworld.proto",
+    langs=["python"]
+)
 
 
 py_requirements(

@@ -1,15 +1,20 @@
-def protogen_impl(name, langs, proto):
-  cmd = ["cp 
-  cmd += ["docker run -v `pwd`:/defs namely/protoc-" + x for x in  ctx.attr.langs]
-  output = 
-  native.genrule(
-      name = name,
-      cmd = "\n".join(cmd),
-      srcs = ctx.files.deps,
-      outs = [output],
-      local = 1,
-  )
-  
+def gen_grpc(name, proto, langs):
+  for lang in langs:
+    cmd = "docker run "
+    cmd += "-v " + proto.path.rstrip(proto.basename) + ":/tmp/input "
+    cmd += "-v $@:/tmp/out"
+    cmd += "borg286/protoc_grpc "
+    if "python" == lang:
+      cmd += "protoc -I /tmp/input --python_out=/tmp/out --grpc_out=/tmp/out --plugin=protoc-gen-grpc=`which grpc_python_plugin` " + proto.basename
+      
+
+    native.genrule(
+        name = name,
+        cmd = "\n".join(cmd),
+        srcs = [proto],
+        outs = ["myoutput.file.txt"],
+        local = 1,
+    )
 
 
 def dependency_impl(ctx):
