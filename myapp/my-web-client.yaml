@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mynodeclient
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: mynodeclient
+    spec:
+      containers:
+      - name: mynode
+        image: localhost:5000/mynodegrpc
+        command:
+        - node
+        - greeter_client.js
+        - world
+        - --server=NODE_GRPC

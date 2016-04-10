@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mynode
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: mynode
+    spec:
+      containers:
+      - name: mynode
+        image: localhost:5000/mynodegrpc
+        ports:
+        - containerPort: 50051
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-grpc
+  labels:
+    run: mynode
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 50051
+    targetPort: 50051
+  selector:
+    run: mynode
