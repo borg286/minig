@@ -3,13 +3,14 @@ load("/rules/extension", "py_requirements")
 load("/rules/extension", "node_dockerfile")
 load("/rules/extension", "node_package")
 load("/rules/extension", "docker_build")
-load("/rules/extension", "gen_grpc")
+load("//tools/build_rules:genproto.bzl", "java_proto_library")
 
 
-gen_grpc(
+
+java_proto_library(
     name="mygrpc",
-    proto="helloworld.proto",
-    langs=["python"]
+    src="helloworld.proto",
+    use_grpc_plugin=True,
 )
 
 
