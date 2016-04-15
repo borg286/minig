@@ -109,7 +109,7 @@ def java_proto_library(name, src, use_grpc_plugin=False):
     grpc_java_plugin = "//third_party/grpc:grpc-java-plugin"
 
   gensrcjar(name=name + "_srcjar", src=src, grpc_java_plugin=grpc_java_plugin)
-  deps = ["//third_party/protobuf"]
+  deps = ["@protobuf//jar"]
   if use_grpc_plugin:
     deps += ["//third_party/grpc:grpc-jar", "//third_party:guava"]
   native.java_library(
