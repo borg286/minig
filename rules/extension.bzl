@@ -5,7 +5,7 @@
 def dependency_impl(ctx):
   content = ctx.attr.prefix + "\n"  
   content += "\n".join(ctx.attr.list)
-  content += "\n".join(['"%s": "%s"' % (key, value) for key, value in ctx.attr.map.items()])
+  content += ",\n".join(['"%s": "%s"' % (key, value) for key, value in ctx.attr.map.items()])
   content += "\n" + ctx.attr.postfix + "\n";
   ctx.file_action(output=ctx.outputs.out, content=content)
 
@@ -94,6 +94,7 @@ def docker_build(name, image_name,
       'cd "$$CTX"',
       'echo $$PWD',
       "docker build -t %s %s ." % (image_name, ' '.join(args)),
+      "docker push %s" % (image_name),
       "cd - >/dev/null",
       "touch $@",
     ]

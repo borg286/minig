@@ -111,7 +111,11 @@ def java_proto_library(name, src, use_grpc_plugin=False):
   gensrcjar(name=name + "_srcjar", src=src, grpc_java_plugin=grpc_java_plugin)
   deps = ["@protobuf//jar"]
   if use_grpc_plugin:
-    deps += ["@grpc_sona//jar", "@guava//jar"]
+    deps += ["@grpc//jar", "@guava//jar"],
+
+
+
+
   native.java_library(
     name=name,
     srcs=[name + "_srcjar"],
