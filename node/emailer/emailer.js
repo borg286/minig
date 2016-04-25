@@ -9,6 +9,9 @@ var emailer_proto = grpc.load(PROTO_PATH).emailer;
 function email(call, callback) {
   callback(null, {id: 1});
 }
+function getStatus(call, callback) {
+  callback(null, {status: "some status"})
+}
 
 /**
  * Starts an RPC server that receives requests for the Emailer service at the
@@ -16,8 +19,12 @@ function email(call, callback) {
  */
 function main() {
   var server = new grpc.Server();
-  server.addProtoService(emailer_proto.Emailer.service, {email: email});
+  server.addProtoService(emailer_proto.Emailer.service, {
+    email: email,
+    getStatus: getStatus
+  });
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
+  console.log("Starting server");
   server.start();
 }
 

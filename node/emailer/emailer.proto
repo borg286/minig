@@ -9,10 +9,10 @@ package emailer;
 
 service Emailer {
   rpc Email (Email) returns (EmailId) {}
-  rpc GetStatus(EmmailId) returns EmailStatus) {}
+  rpc GetStatus(EmailId) returns (EmailStatus) {}
 }
 
-message EmailRequest {
+message Email {
   string recipient = 1;
   optional string cc = 2;
   string subject = 3;
