@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: watch
+  namespace: kube-system
+spec:
+  containers:
+  - image: localhost:5000/busybox-curl
+    command:
+      - watch
+      - "-n5"
+      - "echo 'hello'"
+    imagePullPolicy: IfNotPresent
+    name: watch
+  restartPolicy: Never

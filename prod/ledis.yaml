@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ledisdb
+  namespace: kube-system
+  labels:
+    name: ledisdb
+spec:
+  volumes:
+    - name: "storage"
+      hostPath:
+        path: "/home/borg/ledis_data"
+  containers:
+  - image: borg286/ledisdb
+    ports:
+    - containerPort: 6379
+    - containerPort: 11181
+    imagePullPolicy: IfNotPresent
+    name: ledis-server
+    volumeMounts:
+      - mountPath: "/tmp/ledis-server"
+        name: "storage"
+  - image: localhost:5000/ledis-cli
+    imagePullPolicy: IfNotPresent
+    name: ledis-cli
+    command:
+      - watch
+      - "-n5"
+      - "echo 'hello' >> /dev/null"
+
+  restartPolicy: Always
