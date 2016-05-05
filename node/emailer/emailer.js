@@ -1,5 +1,5 @@
 var PROTO_PATH = __dirname + '/emailer.proto';
-
+ 
 var grpc = require('grpc');
 var emailer_proto = grpc.load(PROTO_PATH).emailer;
 var redis_server = require("redis"),

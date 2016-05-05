@@ -42,7 +42,7 @@ node_dockerfile = rule(
     implementation=dockerfile_impl,
     attrs={
         "base": attr.string(default="localhost:5000/node"),
-        "deps": attr.label_list(),
+        "deps": attr.label_list(allow_files=True),
         "map": attr.string_dict(),
         "run": attr.string(default="npm install")
     },
