@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.emailer";
+option java_outer_classname = "EmailerProto";
+option objc_class_prefix = "EM";
+
+package emailer;
+
+service Emailer {
+  rpc Email (Email) returns (EmailId) {}
+  rpc GetStatus(EmailId) returns (EmailStatus) {}
+}
+
+message Email {
+  string recipient = 1;
+  optional string cc = 2;
+  string subject = 3;
+  optional string body = 4;
+}
+
+message EmailId {
+  string id = 1;
+}
+
+message EmailStatus {
+  string status = 1;
+}

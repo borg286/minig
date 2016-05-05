@@ -41,7 +41,7 @@ py_requirements = rule(
 node_dockerfile = rule(
     implementation=dockerfile_impl,
     attrs={
-        "base": attr.string(default="node"),
+        "base": attr.string(default="localhost:5000/node"),
         "deps": attr.label_list(),
         "map": attr.string_dict(),
         "run": attr.string(default="npm install")
@@ -52,7 +52,7 @@ node_dockerfile = rule(
 node_package = rule(
     implementation=dependency_impl,
     attrs={
-        "prefix": attr.string(default='{"name": "somename","version": "0.1.0","dependencies": {'),
+        "prefix": attr.string(default='{"dependencies": {'),
         "list": attr.string_list(),
         "map": attr.string_dict(),
         "postfix": attr.string(default="}}")
@@ -77,6 +77,7 @@ def docker_build(name, image_name,
   cmd = [
       "set +u",
       "CTX=$@.ctx",
+      'date && echo "copying files"',
       'rm -rf "$$CTX"',
       'mkdir "$$CTX"',
       "srcs=(%s)" % (" ".join(data_locs)),
@@ -93,7 +94,9 @@ def docker_build(name, image_name,
       "cp $(location %s) \"$$CTX\"" % (src),
       'cd "$$CTX"',
       'echo $$PWD',
+      'date && echo "building"',
       "docker build -t %s %s ." % (image_name, ' '.join(args)),
+      'date && echo "pushing to repo"',
       "docker push %s" % (image_name),
       "cd - >/dev/null",
       "touch $@",
@@ -104,5 +107,5 @@ def docker_build(name, image_name,
       cmd = "\n".join(cmd),
       srcs = [src] + data + deps,
       outs = [done_marker],
-      local = 1,
+      tags = ["local", "requires-network"]
   )

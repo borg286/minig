@@ -6,7 +6,8 @@ filegroup(
   name = "mysrcs",
   srcs = [      
       "emailer.js",
-      "emailer.proto"
+      "emailer.proto",
+      "node_modules.tar.gz"
   ]
 )
 
@@ -30,10 +31,10 @@ node_dockerfile(
 node_package(
   name = "package_json",
   map = {
-    "async": "^1.5.2",
-    "grpc": "0.13.0",
-    "lodash": "^4.6.1",
-    "minimist": "^1.2.0"
+    #"async": "^1.5.2"
+    #"grpc": "0.12.0",
+    #"lodash": "^4.6.1",
+    #"minimist": "^1.2.0"
   }
 )
 

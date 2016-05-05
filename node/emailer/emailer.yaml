@@ -14,7 +14,7 @@ spec:
         image: localhost:5000/emailer
         ports:
         - containerPort: 50051
-        command: ["npm" + "emailer.js"]
+        command: ["node", "emailer.js"]
 ---
 apiVersion: v1
 kind: Service
