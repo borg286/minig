@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: route-guide-deplmnt
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: route-guide
+      labels:
+        run: route-guide
+        build: borg-05051904
+    spec:
+      containers:
+      - name: route-guide
+        image: localhost:5000/route_guide:borg-05051904
+        ports:
+        - containerPort: 50051
+        command: ["node", "route_guide_server.js"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: route-guide-svc
+  labels:
+    run: route-guide
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 50051
+    targetPort: 50051
+  selector:
+    run: route-guide
+
