@@ -9,14 +9,14 @@ spec:
       name: route-guide
       labels:
         run: route-guide
-        build: borg-05051904
+        build: borg-05071641
     spec:
       containers:
       - name: route-guide
-        image: localhost:5000/route_guide:borg-05051904
+        image: localhost:5000/route_guide:borg-05071641
         ports:
         - containerPort: 50051
-        command: ["node", "route_guide_server.js"]
+        command: ["node", "route_guide_server.js", "--db_path=route_guide_db.json"]
 ---
 apiVersion: v1
 kind: Service

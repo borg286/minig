@@ -1,5 +1,5 @@
 /*
- *
+ * 
  * Copyright 2015, Google Inc.
  * All rights reserved.
  *
@@ -40,8 +40,7 @@ var path = require('path');
 var _ = require('lodash');
 var grpc = require('grpc');
 var routeguide = grpc.load(PROTO_PATH).routeguide;
-var client = new routeguide.RouteGuide('localhost:50051',
-                                       grpc.credentials.createInsecure());
+var client;
 
 var COORD_FACTOR = 1e7;
 
@@ -217,6 +216,16 @@ function runRouteChat(callback) {
  * Run all of the demos in order
  */
 function main() {
+ if (process.argv.length >= 4) {
+     var argv = require('minimist')(process.argv.slice(2))
+     var target = process.env[argv['server'] + "_SERVICE_HOST"] + ":" + process.env[argv['server'] + "_SERVICE_PORT"];
+     console.log("Creating client to " + target);
+     client = new routeguide.RouteGuide(target, grpc.credentials.createInsecure());
+  } else {
+     console.log("You didn't provide --server=<service name>, so I'll default to connection to 172.17.0.5:50051");
+     client = new routeguide.RouteGuide("172.17.0.5:50051",
+                                       grpc.credentials.createInsecure());
+  }
   async.series([
     runGetFeature,
     runListFeatures,

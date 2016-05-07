@@ -12,6 +12,7 @@ filegroup(
   srcs = [      
       "route_guide_server.js",
       "route_guide_client.js",
+      "route_guide_db.json",
       ":route_guide_proto",
   ]
 )

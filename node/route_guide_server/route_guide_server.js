@@ -62,11 +62,13 @@ var feature_list = [];
  */
 function checkFeature(point) {
   var feature;
+  console.log("CheckFeature got called");
   // Check if there is already a feature object for the given point
   for (var i = 0; i < feature_list.length; i++) {
     feature = feature_list[i];
     if (feature.location.latitude === point.latitude &&
         feature.location.longitude === point.longitude) {
+      console.log("CheckFeature returning " + feature);
       return feature;
     }
   }
@@ -75,6 +77,7 @@ function checkFeature(point) {
     name: name,
     location: point
   };
+  console.log("Made new feature" + feature);
   return feature;
 }
 
@@ -101,6 +104,7 @@ function listFeatures(call) {
   var right = _.max([lo.longitude, hi.longitude]);
   var top = _.max([lo.latitude, hi.latitude]);
   var bottom = _.min([lo.latitude, hi.latitude]);
+  console.log("ListFeatures got called " + left + " " + bottom);
   // For each feature, check if it is in the given bounding box
   _.each(feature_list, function(feature) {
     if (feature.name === '') {
@@ -110,6 +114,7 @@ function listFeatures(call) {
         feature.location.longitude <= right &&
         feature.location.latitude >= bottom &&
         feature.location.latitude <= top) {
+      console.log("Writing feature " + feature);
       call.write(feature);
     }
   });
@@ -160,7 +165,9 @@ function recordRoute(call, callback) {
   var previous = null;
   // Start a timer
   var start_time = process.hrtime();
+  console.log("Starting recording Route");
   call.on('data', function(point) {
+    console.log("Got point" + point);
     point_count += 1;
     if (checkFeature(point).name !== '') {
       feature_count += 1;
@@ -201,7 +208,9 @@ function pointKey(point) {
  * @param {Duplex} call The stream for incoming and outgoing messages
  */
 function routeChat(call) {
+  console.log("RouteChat got called");
   call.on('data', function(note) {
+    console.log("Routing chat " + note);
     var key = pointKey(note.location);
     /* For each note sent, respond with all previous notes that correspond to
      * the same point */
@@ -226,6 +235,7 @@ function routeChat(call) {
  * @return {Server} The new server object
  */
 function getServer() {
+  console.log("Getting server");
   var server = new grpc.Server();
   server.addProtoService(routeguide.RouteGuide.service, {
     getFeature: getFeature,
@@ -237,6 +247,7 @@ function getServer() {
 }
 
 if (require.main === module) {
+  console.log("Starting server")
   // If this is run as a script, start a server on an unused port
   var routeServer = getServer();
   routeServer.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
@@ -246,6 +257,7 @@ if (require.main === module) {
   fs.readFile(path.resolve(argv.db_path), function(err, data) {
     if (err) throw err;
     feature_list = JSON.parse(data);
+    console.log("Starting actual server");
     routeServer.start();
   });
 }
