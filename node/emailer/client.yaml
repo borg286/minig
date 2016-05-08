@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: emailer-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: emailer-client
+      labels:
+        build: borg-05071724
+    spec:
+      containers:
+      - name: emailer-client
+        image: localhost:5000/emailer:borg-05071724
+        command: ["node", "emailer-client.js"]

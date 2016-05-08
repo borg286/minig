@@ -9,11 +9,11 @@ spec:
       name: emailer
       labels:
         run: emailer
-        build: borg-05050901
+        build: borg-05071724
     spec:
       containers:
       - name: emailer
-        image: localhost:5000/emailer:borg-05050901
+        image: localhost:5000/emailer:borg-05071724
         ports:
         - containerPort: 50051
         command: ["node", "emailer.js"]

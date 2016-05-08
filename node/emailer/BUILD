@@ -11,6 +11,7 @@ filegroup(
   name = "mysrcs",
   srcs = [      
       "emailer.js",
+      "emailer-client.js",
       ":emailer_proto",
   ]
 )

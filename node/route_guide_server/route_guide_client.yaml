@@ -13,5 +13,5 @@ spec:
       containers:
       - name: route-guide
         image: localhost:5000/route_guide:borg-05071641
-        command: ["node", "route_guide_client.js", "--db_path=route_guide_db.json", "--server=ROUTE_GUIDE_SVC"]
+        command: ["node", "route_guide_client.js", "--db_path=route_guide_db.json"]
 
