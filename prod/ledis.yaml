@@ -8,7 +8,7 @@ spec:
   volumes:
     - name: "storage"
       hostPath:
-        path: "/home/borg/ledis_data"
+        path: "~/cluster_data/ledis_data"
   containers:
   - image: borg286/ledis
     ports:

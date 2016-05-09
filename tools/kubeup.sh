@@ -1,9 +1,10 @@
 #!/bin/bash
+SAVE=`realpath ~/cluster_data/kubelet`
 docker run \
     --volume=/:/rootfs:ro \
     --volume=/sys:/sys:ro \
     --volume=/var/lib/docker/:/var/lib/docker:rw \
-    --volume=/var/lib/kubelet/:/var/lib/kubelet:rw \
+    --volume=$SAVE:/var/lib/kubelet:rw \
     --volume=/var/run:/var/run:rw \
     --net=host \
     --pid=host \

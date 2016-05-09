@@ -19,30 +19,12 @@ filegroup(
 
 node_dockerfile(
   name="route_guide-dockerfile",
-  base="localhost:5000/route_guide-base",
-  deps = [":mysrcs"]
+  data = [":mysrcs"],
 )
 docker_build(
   name = "docker-build-push",
   image_name = 'localhost:5000/route_guide:$$(whoami)-$$(date "+%m%d%H%M")',
   data = [":mysrcs"],
+  deps = ["//node/base:node"],
   src = ":route_guide-dockerfile",
-  deps = [":route_guide-base"]
-)
-
-node_dockerfile(
-  name = "dockerbasefile",
-  deps=[":package_json", "node_modules.tar.gz"]
-)
-node_package(
-  name = "package_json",
-  map = {
-  }
-)
-
-docker_build(
-  name = "route_guide-base",
-  src = ":dockerbasefile",
-  data = [":package_json", "node_modules.tar.gz"],
-  image_name = "localhost:5000/route_guide-base"
 )

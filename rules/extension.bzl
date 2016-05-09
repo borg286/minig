@@ -11,9 +11,9 @@ def dependency_impl(ctx):
 
 def dockerfile_impl(ctx):
   content = ["FROM " + ctx.attr.base]
-  content += ["ADD " + x.short_path + " ." for x in ctx.files.deps]
-  if ctx.attr.run:
-    content += ["RUN " + ctx.attr.run];
+  content += ["ADD " + x.short_path + " ." for x in ctx.files.data]
+  if ctx.attr.run_list:
+    content += ["RUN " + x for x in ctx.attr.run_list];
   ctx.file_action(output=ctx.outputs.out, content="\n".join(content))
 
 
@@ -21,8 +21,8 @@ py_dockerfile = rule(
     implementation=dockerfile_impl,
     attrs={
         "base": attr.string(default="python"),
-        "deps": attr.label_list(),
-        "run": attr.string(default="pip install -r requirements.txt")
+        "data": attr.label_list(),
+        "run_list": attr.string_list(default=["pip install -r requirements.txt"])
     },
     outputs={"out": "%{name}/Dockerfile"}
 )
@@ -42,9 +42,10 @@ node_dockerfile = rule(
     implementation=dockerfile_impl,
     attrs={
         "base": attr.string(default="localhost:5000/node"),
-        "deps": attr.label_list(allow_files=True),
+        "deps": attr.label(default=Label("//node/base:node")),
+        "data": attr.label_list(allow_files=True),
         "map": attr.string_dict(),
-        "run": attr.string(default="npm install")
+        "run_list": attr.string_list(default=["npm install"])
     },
     outputs={"out": "%{name}/Dockerfile"}
 )
