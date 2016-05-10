@@ -222,7 +222,7 @@ function main() {
      console.log("Creating client to " + target);
      client = new routeguide.RouteGuide(target, grpc.credentials.createInsecure());
   } else {
-     console.log("You didn't provide --server=<service name>, so I'll default to connection to 172.17.0.5:50051");
+     console.log("You didn't provide --server=<service name>, so I'll default to connection to route-guide-svc:50051");
      client = new routeguide.RouteGuide("route-guide-svc:50051",
                                        grpc.credentials.createInsecure());
   }
