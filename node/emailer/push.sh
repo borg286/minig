@@ -5,8 +5,8 @@ sed -i "s/image: localhost:5000\/emailer.*/image: localhost:5000\/emailer:$TAG/"
 sed -i "s/build: .*/build: $TAG/" emailer.yaml && \
 sed -i "s/image: localhost:5000\/emailer.*/image: localhost:5000\/emailer:$TAG/" client.yaml && \
 sed -i "s/build: .*/build: $TAG/" client.yaml && \
-kubectl delete -f emailer.yaml && \
+kubectl delete -f emailer.yaml --grace-period=0 && \
 kubectl create -f emailer.yaml && \
-kubectl delete -f client.yaml && \
+kubectl delete -f client.yaml --grace-period=0 && \
 kubectl create -f client.yaml
 

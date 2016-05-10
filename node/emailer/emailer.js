@@ -15,7 +15,7 @@ redis.on("error", function (err) {
  */
 function email(call, callback) {
   var id = redis.incr("id");
-  redis.set(id, call.recipient + call.body, redis_server.print);
+  console.log(redis.set(id, call.recipient + call.body, redis_server.print));
   callback(null, {id: "1"});
 }
 

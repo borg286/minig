@@ -1,16 +1,13 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: emailer-client
+  namespace: default
+  labels:
+    build: borg-05092033
 spec:
-  replicas: 1
-  template:
-    metadata:
-      name: emailer-client
-      labels:
-        build: borg-05071724
-    spec:
-      containers:
-      - name: emailer-client
-        image: localhost:5000/emailer:borg-05071724
-        command: ["node", "emailer-client.js"]
+  containers:
+  - image: localhost:5000/emailer:borg-05092033
+    command: ["node", "emailer-client.js"]
+    imagePullPolicy: IfNotPresent
+    name: emailer-client

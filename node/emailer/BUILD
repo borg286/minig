@@ -18,11 +18,12 @@ filegroup(
 
 node_dockerfile(
   name="emailer-dockerfile",
-  deps = [":mysrcs"]
+  data = [":mysrcs"]
 )
 docker_build(
   name = "docker-build-push",
   image_name = 'localhost:5000/emailer:$$(whoami)-$$(date "+%m%d%H%M")',
+  deps = ["//node/base:node"],
   data = [":mysrcs"],
   src = ":emailer-dockerfile",
 )
