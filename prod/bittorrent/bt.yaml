@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: btsync
+  labels:
+    name: btsync
+spec:
+  volumes:
+    - name: "storage"
+      hostPath:
+        path: "/var/lib/kubelet/btsync"
+  containers:
+  - image: localhost:5000/btsync
+    ports:
+    - containerPort: 8888
+    - containerPort: 3000
+    imagePullPolicy: IfNotPresent
+    name: btsync
+    volumeMounts:
+      - mountPath: "/home/user/MySharedFolders/"
+        name: "storage"
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: btsync-svc
+  labels:
+    run: btsync
+spec:
+  type: NodePort
+  ports:
+    # the port that this service should serve on
+  - port: 80
+    name: http
+    nodePort: 30004
+    targetPort: 8888
+  - port: 3000
+    name: torrent
+    nodePort: 30005
+    targetPort: 3000
+  selector:
+    run: btsync
+
