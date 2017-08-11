@@ -5,6 +5,7 @@ docker run \
     --volume=/var/lib/docker/:/var/lib/docker:rw \
     --volume=/var/lib/kubelet/:/var/lib/kubelet:rw \
     --volume=/var/run:/var/run:rw \
+    --volume=/home/mrmath/manifests:/tmp/manifests \
     --net=host \
     --restart=always \
     --pid=host \
@@ -17,7 +18,7 @@ docker run \
         --hostname-override="127.0.0.1" \
         --address="0.0.0.0" \
         --api-servers=http://localhost:8080 \
-        --config=/etc/kubernetes/manifests \
+        --pod-manifest-path=/tmp/manifests \
         --cluster-dns=10.0.0.10 \
         --cluster-domain=cluster.local \
         --allow-privileged=true --v=2
