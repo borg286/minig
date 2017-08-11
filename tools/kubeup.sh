@@ -1,11 +1,13 @@
 #!/bin/bash
+export K8S_VERSION=v1.6.8
+cp manifests /tmp/manifests
 docker run \
     --volume=/:/rootfs:ro \
     --volume=/sys:/sys:ro \
     --volume=/var/lib/docker/:/var/lib/docker:rw \
     --volume=/var/lib/kubelet/:/var/lib/kubelet:rw \
     --volume=/var/run:/var/run:rw \
-    --volume=/home/mrmath/manifests:/tmp/manifests \
+    --volume=/tmp/manifests:/tmp/manifests \
     --net=host \
     --restart=always \
     --pid=host \
