@@ -1,6 +1,6 @@
 #!/bin/bash
 export K8S_VERSION=v1.6.8
-cp manifests /tmp/manifests
+cp -r --parents manifests/ /tmp/
 docker run \
     --volume=/:/rootfs:ro \
     --volume=/sys:/sys:ro \
